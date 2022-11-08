@@ -1,0 +1,1267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="Tetracopter">
+  <properties arm="0.103" kf="6.79e-7" km="1.26e-8" thrust2weight="2.25" max_speed_kmh="30" gnd_eff_coeff="11.36859" prop_radius="6.35e-2" drag_coeff_xy="9.1785e-7" drag_coeff_z="10.311e-7" dw_coeff_1="0" dw_coeff_2="0" dw_coeff_3="1" />
+  <link
+    name="L_center">
+    <inertial>
+      <origin
+        xyz="2.0817E-17 1.2887E-05 0.0011"
+        rpy="0 0 0" />
+      <mass
+        value="0.0038267" />
+      <inertia
+        ixx="1.0681E-06"
+        ixy="-4.8465E-21"
+        ixz="-6.9107E-26"
+        iyy="1.0681E-06"
+        iyz="-1.7676E-24"
+        izz="2.1331E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/L_center.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/L_center.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="FArm">
+    <inertial>
+      <origin
+        xyz="0.0063741 -0.002 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.010276" />
+      <inertia
+        ixx="2.4731E-07"
+        ixy="6.2174E-22"
+        ixz="-3.8543E-22"
+        iyy="4.6912E-05"
+        iyz="-1.2152E-23"
+        izz="4.6692E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/FArm.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/FArm.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_1"
+    type="fixed">
+    <origin
+      xyz="0 0.13566 0.0022"
+      rpy="-1.5708 0 -1.5708" />
+    <parent
+      link="L_center" />
+    <child
+      link="FArm" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Motor_2">
+    <inertial>
+      <origin
+        xyz="0 0.00794616510852489 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.0797516528802558" />
+      <inertia
+        ixx="4.93450249686744E-06"
+        ixy="-6.45079509849823E-22"
+        ixz="0"
+        iyy="6.57177915265856E-06"
+        iyz="-9.87210820081553E-23"
+        izz="4.93450249686744E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/Motor_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/Motor_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_6"
+    type="fixed">
+    <origin
+      xyz="0 -0.007 -0.00014142"
+      rpy="0 -0.7854 3.1416" />
+    <parent
+      link="FArm" />
+    <child
+      link="Motor_2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="U_center1">
+    <inertial>
+      <origin
+        xyz="1.8249290967276E-15 0.00100000000000001 -0.0144337567297422"
+        rpy="0 0 0" />
+      <mass
+        value="0.00311904990515203" />
+      <inertia
+        ixx="1.09116505714226E-06"
+        ixy="-6.90134684896435E-24"
+        ixz="-9.46134234649161E-23"
+        iyy="2.18025074768108E-06"
+        iyz="-1.70651775479084E-24"
+        izz="1.09116505714226E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/U_center1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/U_center1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_9"
+    type="fixed">
+    <origin
+      xyz="0.15009 -0.004 0"
+      rpy="0 -1.5708 0" />
+    <parent
+      link="FArm" />
+    <child
+      link="U_center1" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="F_joint">
+    <inertial>
+      <origin
+        xyz="0.02 0.0074654 -0.014229"
+        rpy="0 0 0" />
+      <mass
+        value="0.0070429" />
+      <inertia
+        ixx="8.147E-07"
+        ixy="-2.2975E-12"
+        ixz="5.6359E-12"
+        iyy="9.9287E-07"
+        iyz="-1.9056E-07"
+        izz="7.3094E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/F_joint.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/F_joint.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_12"
+    type="fixed">
+    <origin
+      xyz="-0.080657 0.00275 -0.02"
+      rpy="0 -1.5708 0" />
+    <parent
+      link="FArm" />
+    <child
+      link="F_joint" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="F_stick">
+    <inertial>
+      <origin
+        xyz="-1.3878E-17 -0.14753 -2.7756E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.010705" />
+      <inertia
+        ixx="7.5041E-05"
+        ixy="-8.1072E-21"
+        ixz="-5.0822E-21"
+        iyy="3.3453E-08"
+        iyz="-1.8601E-20"
+        izz="7.5041E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/F_stick.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/F_stick.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_15"
+    type="fixed">
+    <origin
+      xyz="0.02 0.0115 -0.0115"
+      rpy="-2.2937 0.33935 0.36079" />
+    <parent
+      link="F_joint" />
+    <child
+      link="F_stick" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="plate1">
+    <inertial>
+      <origin
+        xyz="-2.2642E-08 0.0015015 -0.049083"
+        rpy="0 0 0" />
+      <mass
+        value="0.02672" />
+      <inertia
+        ixx="3.7052E-05"
+        ixy="3.0832E-12"
+        ixz="9.5578E-12"
+        iyy="7.4106E-05"
+        iyz="-2.2688E-11"
+        izz="3.7094E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/plate1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/plate1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_18"
+    type="fixed">
+    <origin
+      xyz="-0.0490077728879324 -0.287476131564345 -0.0918462748104949"
+      rpy="-2.35619449019234 -0.490153056496124 3.14159265358979" />
+    <parent
+      link="F_stick" />
+    <child
+      link="plate1" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="TopJoint1">
+    <inertial>
+      <origin
+        xyz="-1.4323E-07 0.0023261 -0.010367"
+        rpy="0 0 0" />
+      <mass
+        value="0.0088899" />
+      <inertia
+        ixx="1.7798E-06"
+        ixy="1.8187E-11"
+        ixz="-1.7442E-11"
+        iyy="3.1496E-06"
+        iyz="-1.269E-09"
+        izz="1.7302E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/TopJoint1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/TopJoint1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_21"
+    type="fixed">
+    <origin
+      xyz="-0.0127646999366421 -0.304316373545981 -0.00533560545088967"
+      rpy="-0.714236968529641 -0.309824754986483 0.698391968063662" />
+    <parent
+      link="F_stick" />
+    <child
+      link="TopJoint1" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="RArm">
+    <inertial>
+      <origin
+        xyz="0.0063741 0.002 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.010276" />
+      <inertia
+        ixx="2.4731E-07"
+        ixy="5.2379E-22"
+        ixz="-6.2866E-21"
+        iyy="4.6912E-05"
+        iyz="1.2888E-23"
+        izz="4.6692E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/RArm.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/RArm.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_2"
+    type="fixed">
+    <origin
+      xyz="0.11748 -0.067828 0.0022"
+      rpy="1.5708 0 2.618" />
+    <parent
+      link="L_center" />
+    <child
+      link="RArm" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Motor_3">
+    <inertial>
+      <origin
+        xyz="0 0.0079462 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.079752" />
+      <inertia
+        ixx="4.9345E-06"
+        ixy="1.78E-21"
+        ixz="0"
+        iyy="6.5718E-06"
+        iyz="3.5514E-23"
+        izz="4.9345E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/Motor_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/Motor_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_7"
+    type="fixed">
+    <origin
+      xyz="-0.00014142 0.007 0.00014142"
+      rpy="3.1416 -0.7729 3.1416" />
+    <parent
+      link="RArm" />
+    <child
+      link="Motor_3" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="U_center2">
+    <inertial>
+      <origin
+        xyz="1.818E-15 0.001 -0.014434"
+        rpy="0 0 0" />
+      <mass
+        value="0.003119" />
+      <inertia
+        ixx="1.0912E-06"
+        ixy="-6.9013E-24"
+        ixz="-9.3808E-23"
+        iyy="2.1803E-06"
+        iyz="-1.6257E-24"
+        izz="1.0912E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/U_center2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/U_center2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_10"
+    type="fixed">
+    <origin
+      xyz="0.12844 0.004 -0.0125"
+      rpy="3.1416 -0.5236 3.1416" />
+    <parent
+      link="RArm" />
+    <child
+      link="U_center2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="R_joint">
+    <inertial>
+      <origin
+        xyz="0.02 0.0074654 -0.014229"
+        rpy="0 0 0" />
+      <mass
+        value="0.0070429" />
+      <inertia
+        ixx="8.1469E-07"
+        ixy="-1.5901E-12"
+        ixz="4.8847E-12"
+        iyy="9.9287E-07"
+        iyz="-1.9056E-07"
+        izz="7.3094E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/R_joint.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/R_joint.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_13"
+    type="fixed">
+    <origin
+      xyz="-0.080657 -0.00275 0.02"
+      rpy="0 1.5708 0" />
+    <parent
+      link="RArm" />
+    <child
+      link="R_joint" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="R_stick">
+    <inertial>
+      <origin
+        xyz="-3.525E-15 -0.14753 2.3315E-15"
+        rpy="0 0 0" />
+      <mass
+        value="0.010705" />
+      <inertia
+        ixx="7.5041E-05"
+        ixy="6.3246E-20"
+        ixz="1.6094E-20"
+        iyy="3.3453E-08"
+        iyz="-4.5557E-20"
+        izz="7.5041E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/R_stick.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/R_stick.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_16"
+    type="fixed">
+    <origin
+      xyz="0.02 0.0115 -0.0115"
+      rpy="-2.2616 0.40922 0.4486" />
+    <parent
+      link="R_joint" />
+    <child
+      link="R_stick" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="plate2">
+    <inertial>
+      <origin
+        xyz="-2.26422239499313E-08 0.00150152180746013 -0.0490831897559295"
+        rpy="0 0 0" />
+      <mass
+        value="0.0267197288688586" />
+      <inertia
+        ixx="3.70523038791558E-05"
+        ixy="3.08320934754637E-12"
+        ixz="9.55783489607224E-12"
+        iyy="7.41059209326021E-05"
+        iyz="-2.26876115815528E-11"
+        izz="3.7093715384829E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/plate2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/plate2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_19"
+    type="fixed">
+    <origin
+      xyz="0.0058427 -0.23542 -0.066944"
+      rpy="-1.8929 0.90686 -1.459" />
+    <parent
+      link="R_stick" />
+    <child
+      link="plate2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="TopJoint2">
+    <inertial>
+      <origin
+        xyz="-1.4323E-07 0.0023261 -0.010367"
+        rpy="0 0 0" />
+      <mass
+        value="0.0088899" />
+      <inertia
+        ixx="1.7798E-06"
+        ixy="1.8187E-11"
+        ixz="-1.7442E-11"
+        iyy="3.1496E-06"
+        iyz="-1.269E-09"
+        izz="1.7302E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/TopJoint2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/TopJoint2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_22"
+    type="fixed">
+    <origin
+      xyz="-0.012061 -0.31503 -0.017718"
+      rpy="-2.3562 -0.59766 3.1416" />
+    <parent
+      link="R_stick" />
+    <child
+      link="TopJoint2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="LArm">
+    <inertial>
+      <origin
+        xyz="0.0063741 0.002 2.7756E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.010276" />
+      <inertia
+        ixx="2.4731E-07"
+        ixy="-5.8634E-23"
+        ixz="-7.029E-20"
+        iyy="4.6912E-05"
+        iyz="1.5553E-23"
+        izz="4.6692E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/LArm.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/LArm.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_3"
+    type="fixed">
+    <origin
+      xyz="-0.11748 -0.067828 0.0022"
+      rpy="1.5708 0 0.5236" />
+    <parent
+      link="L_center" />
+    <child
+      link="LArm" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Motor_4">
+    <inertial>
+      <origin
+        xyz="3.1641E-15 0.0079462 -1.3878E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.079752" />
+      <inertia
+        ixx="4.9345E-06"
+        ixy="5.8023E-23"
+        ixz="-1.0588E-22"
+        iyy="6.5718E-06"
+        iyz="-3.5368E-22"
+        izz="4.9345E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/Motor_4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/Motor_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_8"
+    type="fixed">
+    <origin
+      xyz="0 0.007 -0.00014142"
+      rpy="0 0.7854 0" />
+    <parent
+      link="LArm" />
+    <child
+      link="Motor_4" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="U_center3">
+    <inertial>
+      <origin
+        xyz="1.8249E-15 0.001 -0.014434"
+        rpy="0 0 0" />
+      <mass
+        value="0.003119" />
+      <inertia
+        ixx="1.0912E-06"
+        ixy="-6.9013E-24"
+        ixz="-9.6433E-23"
+        iyy="2.1803E-06"
+        iyz="-1.923E-24"
+        izz="1.0912E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/U_center3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/U_center3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_11"
+    type="fixed">
+    <origin
+      xyz="0.12844 0.004 0.0125"
+      rpy="0 -0.5236 0" />
+    <parent
+      link="LArm" />
+    <child
+      link="U_center3" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="L_joint">
+    <inertial>
+      <origin
+        xyz="0.02 0.0074654 -0.014229"
+        rpy="0 0 0" />
+      <mass
+        value="0.0070429" />
+      <inertia
+        ixx="8.1469E-07"
+        ixy="-3.0818E-12"
+        ixz="6.2398E-12"
+        iyy="9.9287E-07"
+        iyz="-1.9056E-07"
+        izz="7.3094E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/L_joint.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/L_joint.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_14"
+    type="fixed">
+    <origin
+      xyz="-0.080657 -0.00275 0.02"
+      rpy="0 1.5708 0" />
+    <parent
+      link="LArm" />
+    <child
+      link="L_joint" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="L_stick">
+    <inertial>
+      <origin
+        xyz="3.0809E-15 -0.14753 -5.6344E-15"
+        rpy="0 0 0" />
+      <mass
+        value="0.010705" />
+      <inertia
+        ixx="7.5041E-05"
+        ixy="-2.1365E-20"
+        ixz="-1.1858E-20"
+        iyy="3.3453E-08"
+        iyz="1.0686E-20"
+        izz="7.5041E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/L_stick.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/L_stick.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_17"
+    type="fixed">
+    <origin
+      xyz="0.02 0.0115 -0.0115"
+      rpy="-1.4279 -0.77505 -1.7736" />
+    <parent
+      link="L_joint" />
+    <child
+      link="L_stick" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="plate3">
+    <inertial>
+      <origin
+        xyz="-2.2642E-08 0.0015015 -0.049083"
+        rpy="0 0 0" />
+      <mass
+        value="0.02672" />
+      <inertia
+        ixx="3.7052E-05"
+        ixy="3.0832E-12"
+        ixz="9.5578E-12"
+        iyy="7.4106E-05"
+        iyz="-2.2688E-11"
+        izz="3.7094E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/plate3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/plate3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_20"
+    type="fixed">
+    <origin
+      xyz="0.057625 -0.23542 -0.034568"
+      rpy="3.03 -0.41882 2.407" />
+    <parent
+      link="L_stick" />
+    <child
+      link="plate3" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="TopJoint3">
+    <inertial>
+      <origin
+        xyz="-1.4323E-07 0.0023261 -0.010367"
+        rpy="0 0 0" />
+      <mass
+        value="0.0088899" />
+      <inertia
+        ixx="1.7798E-06"
+        ixy="1.8187E-11"
+        ixz="-1.7442E-11"
+        iyy="3.1496E-06"
+        iyz="-1.269E-09"
+        izz="1.7302E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/TopJoint3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/TopJoint3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_23"
+    type="fixed">
+    <origin
+      xyz="0.009346 -0.30432 0.010201"
+      rpy="0.12555 -0.62231 -0.85361" />
+    <parent
+      link="L_stick" />
+    <child
+      link="TopJoint3" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="M_center">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/M_center.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/M_center.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_4"
+    type="fixed">
+    <origin
+      xyz="0 0 0.0022"
+      rpy="1.5708 0 0" />
+    <parent
+      link="L_center" />
+    <child
+      link="M_center" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="Motor_1">
+    <inertial>
+      <origin
+        xyz="6.5226E-16 0.0079462 -3.4694E-18"
+        rpy="0 0 0" />
+      <mass
+        value="0.079752" />
+      <inertia
+        ixx="4.9345E-06"
+        ixy="5.2081E-22"
+        ixz="1.0588E-21"
+        iyy="6.5718E-06"
+        iyz="-5.1851E-22"
+        izz="4.9345E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/Motor_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Tetracopter/meshes/Motor_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_5"
+    type="fixed">
+    <origin
+      xyz="0.00014142 0.007 0.00014142"
+      rpy="0 -0.7729 0" />
+    <parent
+      link="M_center" />
+    <child
+      link="Motor_1" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>

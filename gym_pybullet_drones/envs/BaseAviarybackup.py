@@ -120,7 +120,7 @@ class BaseAviary(gym.Env):
         self.MAX_THRUST = (4*self.KF*self.MAX_RPM**2)
         if self.DRONE_MODEL == DroneModel.CF2X:
             self.MAX_XY_TORQUE = (2*self.L*self.KF*self.MAX_RPM**2)/np.sqrt(2)
-        elif self.DRONE_MODEL in [DroneModel.CF2P, DroneModel.HB, DroneModel.Tetra]:
+        elif self.DRONE_MODEL in [DroneModel.CF2P, DroneModel.HB]:
             self.MAX_XY_TORQUE = (self.L*self.KF*self.MAX_RPM**2)
         self.MAX_Z_TORQUE = (2*self.KM*self.MAX_RPM**2)
         self.GND_EFF_H_CLIP = 0.25 * self.PROP_RADIUS * np.sqrt((15 * self.MAX_RPM**2 * self.KF * self.GND_EFF_COEFF) / self.MAX_THRUST)
@@ -147,8 +147,6 @@ class BaseAviary(gym.Env):
                 self.A = np.array([ [1, 1, 1, 1], [1/np.sqrt(2), 1/np.sqrt(2), -1/np.sqrt(2), -1/np.sqrt(2)], [-1/np.sqrt(2), 1/np.sqrt(2), 1/np.sqrt(2), -1/np.sqrt(2)], [-1, 1, -1, 1] ])
             elif self.DRONE_MODEL in [DroneModel.CF2P, DroneModel.HB]:
                 self.A = np.array([ [1, 1, 1, 1], [0, 1, 0, -1], [-1, 0, 1, 0], [-1, 1, -1, 1] ])
-            else:
-                self.A = np.array([ [1, 1, 1, 1], [0, 0, np.sqrt(3)/2, -np.sqrt(3)/2], [0, 1, -0.5, -0.5], [1, -1, -1, 1] ])
             self.INV_A = np.linalg.inv(self.A)
             self.B_COEFF = np.array([1/self.KF, 1/(self.KF*self.L), 1/(self.KF*self.L), 1/self.KM])
         #### Connect to PyBullet ###################################
@@ -316,7 +314,6 @@ class BaseAviary(gym.Env):
         else:
             self._saveLastAction(action)
             clipped_action = np.reshape(self._preprocessAction(action), (self.NUM_DRONES, 4))
-        # clipped_action = np.reshape(list(action.values()), (self.NUM_DRONES, 4))
         #### Repeat for as many as the aggregate physics steps #####
         for _ in range(self.AGGR_PHY_STEPS):
             #### Update and store the drones kinematic info for certain
@@ -670,9 +667,7 @@ class BaseAviary(gym.Env):
         """
         forces = np.array(rpm**2)*self.KF
         torques = np.array(rpm**2)*self.KM
-        z_torque = (torques[0] - torques[1] - torques[2] + torques[3])
-        x_torque = (((np.sqrt(3)/2)*(forces[2] - forces[3]))) * self.L
-        y_torque = (forces[1] + -0.5*forces[2] + 0.5*forces[3]) * self.L
+        z_torque = (-torques[0] + torques[1] - torques[2] + torques[3])
         for i in range(4):
             p.applyExternalForce(self.DRONE_IDS[nth_drone],
                                  i,
@@ -681,10 +676,9 @@ class BaseAviary(gym.Env):
                                  flags=p.LINK_FRAME,
                                  physicsClientId=self.CLIENT
                                  )
-        
         p.applyExternalTorque(self.DRONE_IDS[nth_drone],
                               4,
-                              torqueObj=[x_torque, y_torque, z_torque],
+                              torqueObj=[0, 0, z_torque],
                               flags=p.LINK_FRAME,
                               physicsClientId=self.CLIENT
                               )
@@ -809,7 +803,6 @@ class BaseAviary(gym.Env):
             The ordinal number/position of the desired drone in list self.DRONE_IDS.
 
         """
-        print(rpm)
         #### Current state #########################################
         pos = self.pos[nth_drone,:]
         quat = self.quat[nth_drone,:]
@@ -823,16 +816,13 @@ class BaseAviary(gym.Env):
         thrust_world_frame = np.dot(rotation, thrust)
         force_world_frame = thrust_world_frame - np.array([0, 0, self.GRAVITY])
         z_torques = np.array(rpm**2)*self.KM
-        z_torque = (z_torques[0] - z_torques[1] - z_torques[2] + z_torques[3])
+        z_torque = (-z_torques[0] + z_torques[1] - z_torques[2] + z_torques[3])
         if self.DRONE_MODEL==DroneModel.CF2X:
             x_torque = (forces[0] + forces[1] - forces[2] - forces[3]) * (self.L/np.sqrt(2))
             y_torque = (- forces[0] + forces[1] + forces[2] - forces[3]) * (self.L/np.sqrt(2))
         elif self.DRONE_MODEL==DroneModel.CF2P or self.DRONE_MODEL==DroneModel.HB:
             x_torque = (forces[1] - forces[3]) * self.L
             y_torque = (-forces[0] + forces[2]) * self.L
-        else:
-            x_torque = (((np.sqrt(3)/2)*(forces[2] - forces[3]))) * self.L
-            y_torque = (forces[1] + -0.5*forces[2] + 0.5*forces[3]) * self.L            
         torques = np.array([x_torque, y_torque, z_torque])
         torques = torques - np.cross(rpy_rates, np.dot(self.J, rpy_rates))
         rpy_rates_deriv = np.dot(self.J_INV, torques)
@@ -991,12 +981,8 @@ class BaseAviary(gym.Env):
         J_INV = np.linalg.inv(J)
         KF = float(URDF_TREE[0].attrib['kf'])
         KM = float(URDF_TREE[0].attrib['km'])
-        if self.DRONE_MODEL == DroneModel.Tetra:
-            COLLISION_H = 0.23
-            COLLISION_R = 0.225
-        else:
-            COLLISION_H = float(URDF_TREE[1][2][1][0].attrib['length'])
-            COLLISION_R = float(URDF_TREE[1][2][1][0].attrib['radius'])
+        COLLISION_H = float(URDF_TREE[1][2][1][0].attrib['length'])
+        COLLISION_R = float(URDF_TREE[1][2][1][0].attrib['radius'])
         COLLISION_SHAPE_OFFSETS = [float(s) for s in URDF_TREE[1][2][0].attrib['xyz'].split(' ')]
         COLLISION_Z_OFFSET = COLLISION_SHAPE_OFFSETS[2]
         MAX_SPEED_KMH = float(URDF_TREE[0].attrib['max_speed_kmh'])

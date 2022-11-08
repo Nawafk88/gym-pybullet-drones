@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter drag_coeff_xy="9.1785e-7" drag_coeff_z="10.311e-7" -->
+<robot
+  name="Tetracopter">
+  <properties arm="0.134" kf="6.79e-7" km="1.26e-8" thrust2weight="2.43" max_speed_kmh="30" gnd_eff_coeff="0." prop_radius="6.35e-2" drag_coeff_xy="0." drag_coeff_z="0." dw_coeff_1="0" dw_coeff_2="0" dw_coeff_3="1" />
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.0 0.0 0.0"
+        rpy="0 0 0" />
+      <mass
+        value="0.89" />
+      <inertia
+        ixx="0.01150313"
+        ixy="0"
+        ixz="0"
+        iyy="0.01150313"
+        iyz="0"
+        izz="0.01529841" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="-0.12 -0.195 0"
+        rpy="3.14159 3.14159 3.14159" />
+      <geometry>
+        <mesh filename="tetra2.dae" scale=" 0.001 0.001 0.001"/>
+        <!-- <cylinder radius=".168875" length="0.23"/> -->
+      </geometry>
+      <material
+        name="e">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.225167 0.195 0"
+        rpy="1.5707 0 -1.5707" />
+      <geometry>
+        <!-- <cylinder radius=".168875" length="0.23"/> -->
+        <mesh filename="tetra_collision.STL" scale=" 0.001 0.001 0.001"/>
+      </geometry>
+      <material
+        name="f">
+        <color
+          rgba="1 1 0 1" />
+      </material>
+    </collision>
+  </link>
+
+  <link name="prop0_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.0635" length="0.005"/>
+      </geometry>
+      <material
+        name="d">
+        <color
+          rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+  <joint name="prop0_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="prop0_link"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+  <link name="prop1_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.0635" length="0.005"/>
+      </geometry>
+      <material
+        name="a">
+        <color
+          rgba="1 0 0 1" />
+      </material>
+    </visual>
+  </link>
+  <joint name="prop1_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="prop1_link"/>
+    <origin xyz="0.134 0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+  <link name="prop2_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.0635" length="0.005"/>
+      </geometry>
+      <material
+        name="b">
+        <color
+          rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+  <joint name="prop2_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="prop2_link"/>
+    <origin xyz="-0.067 0.116047 0" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <link name="prop3_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.0635" length="0.005"/>
+      </geometry>
+      <material
+        name="c">
+        <color
+          rgba="0 1 0 1" />
+      </material>
+    </visual>
+  </link>
+  <joint name="prop3_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="prop3_link"/>
+    <origin xyz="-0.067 -0.116047 0" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <link name="center_of_mass_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0.08"/>
+      <mass value="0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+  </link>
+  <joint name="center_of_mass_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="center_of_mass_link"/>
+  </joint>
+</robot>

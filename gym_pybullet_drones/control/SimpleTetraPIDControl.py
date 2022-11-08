@@ -3,10 +3,10 @@ import pybullet as p
 
 from gym_pybullet_drones.control.BaseControl import BaseControl
 from gym_pybullet_drones.utils.enums import DroneModel
-from gym_pybullet_drones.utils.utils import nnlsRPM
+from gym_pybullet_drones.utils.utils import nnlsRPM, quaternion_inverse, quaternion_multiply
 
-class SimplePIDControl(BaseControl):
-    """Generic PID control class without yaw control.
+class SimpleTetraPIDControl(BaseControl):
+    """Generic PID control class without yaw control on tetra config.
 
     Based on https://github.com/prfraanje/quadcopter_sim.
 
@@ -29,26 +29,40 @@ class SimplePIDControl(BaseControl):
 
         """
         super().__init__(drone_model=drone_model, g=g)
-        if self.DRONE_MODEL != DroneModel.HB:
-            print("[ERROR] in SimplePIDControl.__init__(), SimplePIDControl requires DroneModel.HB")
+        if self.DRONE_MODEL != DroneModel.Tetra:
+            print("[ERROR] in SimpleTetraPIDControl.__init__(), SimpleTetraPIDControl requires DroneModel.Tetra")
             exit()
-        self.P_COEFF_FOR = np.array([.1, .1, .2])
+        # self.P_COEFF_FOR = np.array([6.5, 6.5, 2.8])
+        # self.I_COEFF_FOR = np.array([3., 3., 3.])
+        # self.D_COEFF_FOR = np.array([0.3, 0.3, 0.3])
+        self.KP1 = np.array([6.5, 6.5, 2.8])
+        self.KP2 = np.array([0.15, 0.15, 0.15])
+        self.KI = np.array([0.2, 0.2, 0.2])
+        self.KD = np.array([0.003, 0.003, 0.003])
+        self.KP1_alt = 1
+        self.KP2_alt = 4
+        self.KI_alt = 2
+        self.P_COEFF_FOR = np.array([6.1, 6.1, 2.5])
         self.I_COEFF_FOR = np.array([.0001, .0001, .0001])
-        self.D_COEFF_FOR = np.array([.3, .3, .4])
-        self.P_COEFF_TOR = np.array([.3, .3, .05])
-        self.I_COEFF_TOR = np.array([.0001, .0001, .0001])
-        self.D_COEFF_TOR = np.array([.3, .3, .5])
+        self.D_COEFF_FOR = np.array([.3, .3, .3])
+        self.P_COEFF_TOR = np.array([0.0003, 0.0003, 0.0003])
+        self.I_COEFF_TOR = np.array([.00001, .00001, .00001])
+        self.D_COEFF_TOR = np.array([.000003, .000003, .000003])
         self.MAX_ROLL_PITCH = np.pi/6
         self.L = self._getURDFParameter('arm')
         self.THRUST2WEIGHT_RATIO = self._getURDFParameter('thrust2weight')
         self.MAX_RPM = np.sqrt((self.THRUST2WEIGHT_RATIO*self.GRAVITY) / (4*self.KF))
-        self.MAX_THRUST = (4*self.KF*self.MAX_RPM**2)
-        self.MAX_XY_TORQUE = (self.L*self.KF*self.MAX_RPM**2)
-        self.MAX_Z_TORQUE = (2*self.KM*self.MAX_RPM**2)
-        # self.A = np.array([ [1, 1, 1, 1], [0, 1, 0, -1], [-1, 0, 1, 0], [-1, 1, -1, 1] ])
-        self.A = np.array([ [1, 1, 1, 1], [0, 0, np.sqrt(3)/2, -np.sqrt(3)/2], [0, 1, -0.5, -0.5], [1, -1, -1, 1] ])
+        # self.MAX_THRUST = (4*self.KF*self.MAX_RPM**2)
+        # self.MAX_XY_TORQUE = (self.L*self.KF*self.MAX_RPM**2)
+        # self.MAX_Z_TORQUE = (2*self.KM*self.MAX_RPM**2)
+        self.MAX_THRUST = 5.3*1000
+        self.MAX_XY_TORQUE = 0.078
+        self.MAX_Z_TORQUE = 0.078
+        # self.A = np.array([ [1, 1, 1, 1], [0, 0, np.sqrt(3)/2, -np.sqrt(3)/2], [0, 1, -0.5, -0.5], [1, -1, -1, 1] ])
+        self.A = np.array([ [self.KF, self.KF, self.KF, self.KF], [0, 0, (self.KF*self.L)*(np.sqrt(3)/2), -(self.KF*self.L)*(np.sqrt(3)/2)], [0, (self.KF*self.L), -0.5*(self.KF*self.L), -0.5*(self.KF*self.L)], [self.KM, -1*self.KM, -1*self.KM, self.KM] ])
         self.INV_A = np.linalg.inv(self.A)
-        self.B_COEFF = np.array([1/self.KF, 1/(self.KF*self.L), 1/(self.KF*self.L), 1/self.KM])
+        # self.B_COEFF = np.array([1/self.KF, 1/(self.KF*self.L), 1/(self.KF*self.L), 1/self.KM])
+        self.B_COEFF = np.array([1, 1, 1, 1])
         self.reset()
 
     ################################################################################
@@ -65,6 +79,10 @@ class SimplePIDControl(BaseControl):
         self.integral_pos_e = np.zeros(3)
         self.last_rpy_e = np.zeros(3)
         self.integral_rpy_e = np.zeros(3)
+        self.last_e_omega = np.zeros(3)
+        self.integral_e_omega = np.zeros(3)
+        self.last_e_vz = 0
+        self.integral_e_vz = 0
     
     ################################################################################
 
@@ -117,81 +135,20 @@ class SimplePIDControl(BaseControl):
         """
         self.control_counter += 1
         if target_rpy[2]!=0:
-            print("\n[WARNING] ctrl it", self.control_counter, "in SimplePIDControl.computeControl(), desired yaw={:.0f}deg but locked to 0. for DroneModel.HB".format(target_rpy[2]*(180/np.pi)))
-        thrust, computed_target_rpy, pos_e = self._simplePIDPositionControl(control_timestep,
-                                                                            cur_pos,
-                                                                            cur_quat,
-                                                                            target_pos
-                                                                            )
-        rpm = self._simplePIDAttitudeControl(control_timestep,
-                                             thrust,
-                                             cur_quat,
-                                             computed_target_rpy
-                                             )
-        cur_rpy = p.getEulerFromQuaternion(cur_quat)
-        return rpm, pos_e, computed_target_rpy[2] - cur_rpy[2]
+            print("\n[WARNING] ctrl it", self.control_counter, "in SimpleTetraPIDControl.computeControl(), desired yaw={:.0f}deg but locked to 0. for DroneModel.HB".format(target_rpy[2]*(180/np.pi)))
+        thrust = self._tetraAltitudeControl(control_timestep, cur_pos, target_pos, cur_vel, target_vel)
+        rpm = self._tetraPIDAttitudeControl(control_timestep, thrust, cur_quat, target_rpy, cur_ang_vel)
+        # cur_rpy = p.getEulerFromQuaternion(cur_quat)
+        return rpm, 0, 0
 
     ################################################################################
-
-    def _simplePIDPositionControl(self,
-                                  control_timestep,
-                                  cur_pos,
-                                  cur_quat,
-                                  target_pos
-                                  ):
-        """Simple PID position control (with yaw fixed to 0).
-
-        Parameters
-        ----------
-        control_timestep : float
-            The time step at which control is computed.
-        cur_pos : ndarray
-            (3,1)-shaped array of floats containing the current position.
-        cur_quat : ndarray
-            (4,1)-shaped array of floats containing the current orientation as a quaternion.
-        target_pos : ndarray
-            (3,1)-shaped array of floats containing the desired position.
-
-        Returns
-        -------
-        float
-            The target thrust along the drone z-axis.
-        ndarray
-            (3,1)-shaped array of floats containing the target roll, pitch, and yaw.
-        float
-            The current position error.
-
-        """
-        pos_e = target_pos - np.array(cur_pos).reshape(3)
-        d_pos_e = (pos_e - self.last_pos_e) / control_timestep
-        self.last_pos_e = pos_e
-        self.integral_pos_e = self.integral_pos_e + pos_e*control_timestep
-        #### PID target thrust #####################################
-        target_force = np.array([0, 0, self.GRAVITY]) \
-                       + np.multiply(self.P_COEFF_FOR, pos_e) \
-                       + np.multiply(self.I_COEFF_FOR, self.integral_pos_e) \
-                       + np.multiply(self.D_COEFF_FOR, d_pos_e)
-        target_rpy = np.zeros(3)
-        sign_z =  np.sign(target_force[2])
-        if sign_z == 0:
-            sign_z = 1
-        #### Target rotation #######################################
-        target_rpy[0] = np.arcsin(-sign_z*target_force[1] / np.linalg.norm(target_force))
-        target_rpy[1] = np.arctan2(sign_z*target_force[0], sign_z*target_force[2])
-        target_rpy[2] = 0.
-        target_rpy[0] = np.clip(target_rpy[0], -self.MAX_ROLL_PITCH, self.MAX_ROLL_PITCH)
-        target_rpy[1] = np.clip(target_rpy[1], -self.MAX_ROLL_PITCH, self.MAX_ROLL_PITCH)
-        cur_rotation = np.array(p.getMatrixFromQuaternion(cur_quat)).reshape(3, 3)
-        thrust = np.dot(cur_rotation, target_force)
-        return thrust[2], target_rpy, pos_e
-
-    ################################################################################
-
-    def _simplePIDAttitudeControl(self,
+    
+    def _tetraPIDAttitudeControl(self,
                                   control_timestep,
                                   thrust,
                                   cur_quat,
-                                  target_rpy
+                                  target_rpy,
+                                  cur_ang_vel
                                   ):
         """Simple PID attitude control (with yaw fixed to 0).
 
@@ -212,19 +169,19 @@ class SimplePIDControl(BaseControl):
             (4,1)-shaped array of integers containing the RPMs to apply to each of the 4 motors.
 
         """
-        cur_rpy = p.getEulerFromQuaternion(cur_quat)
-        rpy_e = target_rpy - np.array(cur_rpy).reshape(3,)
-        if rpy_e[2] > np.pi:
-            rpy_e[2] = rpy_e[2] - 2*np.pi
-        if rpy_e[2] < -np.pi:
-            rpy_e[2] = rpy_e[2] + 2*np.pi
-        d_rpy_e = (rpy_e - self.last_rpy_e) / control_timestep
-        self.last_rpy_e = rpy_e
-        self.integral_rpy_e = self.integral_rpy_e + rpy_e*control_timestep
+        # cur_rpy = p.getEulerFromQuaternion(cur_quat)
+        quat_sp = p.getQuaternionFromEuler(target_rpy)
+        cur_quat_inv = quaternion_inverse(cur_quat)
+        e_i = quaternion_multiply(np.roll(quat_sp, 1), cur_quat_inv)
+        ang_vel_sp =  np.multiply(self.KP1, np.sign(e_i[0])*e_i[1:])
+        e_omega = ang_vel_sp - cur_ang_vel
+        d_e_omega = (e_omega - self.last_e_omega) / control_timestep
+        self.last_e_omega = e_omega
+        self.integral_e_omega = self.integral_e_omega + e_omega*control_timestep
         #### PID target torques ####################################
-        target_torques = np.multiply(self.P_COEFF_TOR, rpy_e) \
-                         + np.multiply(self.I_COEFF_TOR, self.integral_rpy_e) \
-                         + np.multiply(self.D_COEFF_TOR, d_rpy_e)
+        target_torques = np.multiply(self.KP2, e_omega) \
+                         + np.multiply(self.KI, self.integral_e_omega) \
+                         + np.multiply(self.KD, d_e_omega)
         return nnlsRPM(thrust=thrust,
                        x_torque=target_torques[0],
                        y_torque=target_torques[1],
@@ -238,4 +195,38 @@ class SimplePIDControl(BaseControl):
                        b_coeff=self.B_COEFF,
                        gui=True
                        )
- 
+    ################################################################################
+
+    def _tetraAltitudeControl(self,
+                                  control_timestep,
+                                  cur_pos,
+                                  target_pos,
+                                  cur_vel,
+                                  target_vel
+                                  ):
+        """Tetra Altitude controller
+
+        Parameters
+        ----------
+        control_timestep : float
+            The time step at which control is computed.
+
+        Returns
+        -------
+        float
+            The target thrust along the drone z-axis.
+
+        """
+        e_z = 1*(target_pos[2] - cur_pos[2])
+        print("e_z")
+        print(e_z)
+        vel_z_sp = self.KP1_alt*e_z
+        e_vz = vel_z_sp - cur_vel[2]
+        #d_e_vz = (e_vz - self.last_e_vz) / control_timestep
+        #self.last_e_vz = e_vz
+        self.integral_e_vz = self.integral_e_vz + e_vz*control_timestep
+        #### PID target thrust ####################################
+        a_com = self.KP2_alt*e_vz + self.KI_alt*self.integral_e_vz
+        # a_com = 0.1
+        target_thrust = 1*(1*9.8 + 1*a_com)
+        return target_thrust
