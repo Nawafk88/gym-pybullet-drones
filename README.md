@@ -1,3 +1,18 @@
+# Tetra environemnt for pybullet
+This repository is for testing pybullet gym environment for tetra drones. 
+To simulate the vehicle with the altitude controller run
+```bash
+$ python tetra_fly.py
+```
+the controller is in file SimpleTetraPIDController.py
+The drone inherits all its properties from baseaviary class. As well as the controller.
+
+
+
+
+
+
+
 # NOTE
 This repository's `master` branch is actively developed, please `git pull` frequently and feel free to open new [issues](https://github.com/utiasDSL/gym-pybullet-drones/issues) for any undesired, unexpected, or (presumably) incorrect behavior. Thanks 🙏
 
